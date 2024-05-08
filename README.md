@@ -12,15 +12,26 @@ ensure all provided parameters are positive and the accrual type is either "simp
 
 Your task is to write automated functional tests to verify the functionality and robustness of this Interest Calculator
 API. Your tests should cover various scenarios including positive cases, negative cases, and edge cases. Feel free to
-use any tooling of your choice to demonstrate how you would approach writing automation tests for this application.
+use any tooling of your choice to demonstrate how you would approach writing automation tests for this application. You
+should spend no longer than 4 hours on this task and we would rather you complete less functionality to a good standard
+than rushing to try to complete it all. Show us your workings by initialising a git repo and committing your changes as
+you go. Your submission should be considered the quality you would expect to open a PR, not to merge one. We don't
+expect the submission to be production standard or gold plated. The submission will be followed up with a review call
+where we will ask you to walk us through your solution. We will then ask you to extend it with some additional
+functionality.
 
 ### Deliverables
 
-- A git bundle that contains all your automated tests
-- A readme detailing
-  - How to set up and run your tests
-  - A brief explanation of your testing strategy and tools used
-  - Any findings from the testing which you would feedback to developers
+- A git bundle that contains all your automated tests. This can be done by:
+
+```bash
+git bundle create name.bundle --all 
+```
+
+- README.md in the git bundle detailing
+    - How to set up and run your tests
+    - A brief explanation of your testing strategy and tools used
+    - Any findings from the testing which you would feedback to developers
 
 ---
 
