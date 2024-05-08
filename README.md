@@ -32,6 +32,7 @@ git bundle create name.bundle --all
     - How to set up and run your tests
     - A brief explanation of your testing strategy and tools used
     - Any findings from the testing which you would feedback to developers
+- Submit your sample git bundle emailing it to us (via your recruiter if you have one)
 
 ---
 
