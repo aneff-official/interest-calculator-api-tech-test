@@ -1,6 +1,6 @@
 # Interest Calculator Technical Test
 
-## Techincal Test
+## Technical Test
 
 ### Background
 
