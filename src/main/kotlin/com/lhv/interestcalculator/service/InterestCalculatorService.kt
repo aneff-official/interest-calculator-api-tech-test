@@ -14,6 +14,6 @@ class InterestCalculatorService {
     fun calculateCompoundInterest(amount: BigDecimal, interestRate: BigDecimal, duration: Int): BigDecimal {
         val rate = interestRate.divide(BigDecimal(100))
         val total = amount.multiply((BigDecimal.ONE.add(rate)).pow(duration))
-        return total.subtract(amount).add(BigDecimal(30)).setScale(2, RoundingMode.HALF_UP)
+        return total.subtract(amount).setScale(2, RoundingMode.HALF_UP)
     }
 }

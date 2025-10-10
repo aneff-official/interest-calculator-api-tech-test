@@ -44,7 +44,7 @@ class InterestCalculatorIntegrationTest {
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.startingAmount").value("1000.0"))
-            .andExpect(jsonPath("$.interestAccrued").value("187.63"))
+            .andExpect(jsonPath("$.interestAccrued").value("157.63"))
             .andExpect(jsonPath("$.finalBalance").value("1157.63"))
     }
 
