@@ -27,7 +27,7 @@ class InterestCalculationServiceTest {
         val amount = BigDecimal("1000")
         val interestRate = BigDecimal("5")
         val duration = 3
-        val expectedInterest = BigDecimal("187.63")
+        val expectedInterest = BigDecimal("157.63")
 
         val calculation = service.calculateCompoundInterest(amount, interestRate, duration)
 
