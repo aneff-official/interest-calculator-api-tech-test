@@ -12,7 +12,7 @@ import java.math.BigDecimal
 
 @RestController
 class InterestCalculatorController(
-    @Autowired val interestCalculator: InterestCalculatorService
+    val interestCalculator: InterestCalculatorService
 ) {
 
     @GetMapping("/interest/calculate")
