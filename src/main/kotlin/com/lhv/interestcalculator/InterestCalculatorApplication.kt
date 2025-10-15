@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class InterestCalculatorApplication
 
 fun main(args: Array<String>) {
-	runApplication<InterestCalculatorApplication>(*args)
+    runApplication<InterestCalculatorApplication>(*args)
 }

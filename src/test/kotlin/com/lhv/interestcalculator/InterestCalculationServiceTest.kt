@@ -1,13 +1,11 @@
 package com.lhv.interestcalculator
 
-import com.lhv.interestcalculator.api.InterestCalculatorController
 import com.lhv.interestcalculator.service.InterestCalculatorService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
 class InterestCalculationServiceTest {
-
     private val service = InterestCalculatorService()
 
     @Test
