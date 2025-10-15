@@ -1,12 +1,40 @@
 package com.lhv.interestcalculator
 
+import com.lhv.interestcalculator.calculation.InterestCalculationStrategy
+import com.lhv.interestcalculator.model.AccrualType
 import com.lhv.interestcalculator.service.InterestCalculatorService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
 class InterestCalculationServiceTest {
-    private val service = InterestCalculatorService()
+    // Test implementations of the strategies
+    private val simpleStrategy =
+        object : InterestCalculationStrategy {
+            override fun calculate(
+                amount: BigDecimal,
+                interestRate: BigDecimal,
+                duration: Int,
+            ): BigDecimal =
+                amount
+                    .multiply(
+                        interestRate.divide(BigDecimal(100)),
+                    ).multiply(BigDecimal(duration))
+                    .setScale(2, java.math.RoundingMode.HALF_UP)
+        }
+    private val compoundStrategy =
+        object : InterestCalculationStrategy {
+            override fun calculate(
+                amount: BigDecimal,
+                interestRate: BigDecimal,
+                duration: Int,
+            ): BigDecimal {
+                val rate = interestRate.divide(BigDecimal(100))
+                val total = amount.multiply((BigDecimal.ONE.add(rate)).pow(duration))
+                return total.subtract(amount).setScale(2, java.math.RoundingMode.HALF_UP)
+            }
+        }
+    private val service = InterestCalculatorService(simpleStrategy, compoundStrategy)
 
     @Test
     fun `test simple interest calculation`() {
@@ -15,7 +43,7 @@ class InterestCalculationServiceTest {
         val duration = 3
         val expectedInterest = BigDecimal("150.00")
 
-        val calculation = service.calculateSimpleInterest(amount, interestRate, duration).setScale(2)
+        val calculation = service.calculate(amount, interestRate, duration, AccrualType.SIMPLE).setScale(2)
 
         assertEquals(expectedInterest, calculation)
     }
@@ -27,7 +55,7 @@ class InterestCalculationServiceTest {
         val duration = 3
         val expectedInterest = BigDecimal("157.63")
 
-        val calculation = service.calculateCompoundInterest(amount, interestRate, duration)
+        val calculation = service.calculate(amount, interestRate, duration, AccrualType.COMPOUND)
 
         assertEquals(expectedInterest.setScale(2), calculation.setScale(2))
     }
