@@ -1,16 +1,16 @@
 package com.lhv.interestcalculator
 
-import com.lhv.interestcalculator.api.InterestCalculatorController
-import com.lhv.interestcalculator.service.InterestCalculatorService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@WebMvcTest(InterestCalculatorController::class, InterestCalculatorService::class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class InterestCalculatorIntegrationTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -27,9 +27,9 @@ class InterestCalculatorIntegrationTest {
                     .param("accrualType", "SIMPLE")
                     .contentType(MediaType.APPLICATION_JSON),
             ).andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.startingAmount").value("1000.0"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.interestAccrued").value("150.0"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.finalBalance").value("1150.0"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.startingAmount").value(1000.0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.interestAccrued").value(150.0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.finalBalance").value(1150.0))
     }
 
     @Test
@@ -44,9 +44,9 @@ class InterestCalculatorIntegrationTest {
                     .param("accrualType", "COMPOUND")
                     .contentType(MediaType.APPLICATION_JSON),
             ).andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.startingAmount").value("1000.0"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.interestAccrued").value("157.63"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.finalBalance").value("1157.63"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.startingAmount").value(1000.0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.interestAccrued").value(157.63))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.finalBalance").value(1157.63))
     }
 
     @Test

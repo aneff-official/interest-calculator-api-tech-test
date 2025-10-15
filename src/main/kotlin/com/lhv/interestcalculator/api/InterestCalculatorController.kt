@@ -24,11 +24,7 @@ class InterestCalculatorController(
             return ResponseEntity.badRequest().body("All parameters must be positive numbers and not zero.")
         }
 
-        val interest =
-            when (accrualType) {
-                AccrualType.SIMPLE -> interestCalculator.calculateSimpleInterest(amount, interestRate, duration).setScale(2)
-                AccrualType.COMPOUND -> interestCalculator.calculateCompoundInterest(amount, interestRate, duration).setScale(2)
-            }
+        val interest = interestCalculator.calculate(amount, interestRate, duration, accrualType).setScale(2)
 
         return ResponseEntity.ok(
             CalculationResponse(
