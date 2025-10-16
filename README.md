@@ -10,35 +10,40 @@ ensure all provided parameters are positive and the accrual type is either "simp
 
 ### Task
 
-Your task is to write automated functional tests to verify the functionality and robustness of this Interest Calculator
-API. Your tests should cover various scenarios including positive cases, negative cases, and edge cases. Feel free to
-use any tooling of your choice to demonstrate how you would approach writing automation tests for this application. You
-should spend no longer than 4 hours on this task and we would rather you complete less functionality to a good standard
-than rushing to try to complete it all. Show us your workings by initialising a git repo and committing your changes as
-you go. Your submission should be considered the quality you would expect to open a PR, not to merge one. We don't
-expect the submission to be production standard or gold plated. The submission will be followed up with a review call
-where we will ask you to walk us through your solution. We will then ask you to extend it with some additional
-functionality.
+Choose ONE primary track (Test Automation or Backend Engineering) and demonstrate depth, clarity, and good engineering/testing practices within the suggested 2–4 hour window. Prioritise
+quality over breadth: a smaller, well‑crafted set of tests or a focused, well‑tested feature beats a sprawling, shallow
+submission.
+
+Track summaries (details further below):
+- Test Automation Track: Design and implement an automated suite validating existing behaviour (happy paths, validation,
+  edge cases) and optionally add advanced techniques (property‑based, mutation, performance smoke, contract/schema).
+- Backend Engineering Track: Extend the API with a small feature (e.g. new accrual type, schedule endpoint, improved
+  error model) accompanied by unit + integration tests and concise documentation.
+
+Expectations common to both tracks:
+- Incremental commits with meaningful messages.
+- Clear README (in your bundle) explaining how to run what you built and the rationale for your approach.
+- Explicit note of any deliberate omissions due to time.
 
 ### Deliverables
 
-- A git bundle that contains all your automated tests. This can be done by:
+- A git bundle that contains all your work. This can be done by:
 
 ```bash
 git bundle create name.bundle --all 
 ```
 
-- README.md in the git bundle detailing
-    - How to set up and run your tests
-    - A brief explanation of your testing strategy and tools used
-    - Any findings from the testing which you would feedback to developers
+- Include a file README.md in the git bundle detailing
+    - How to set up and run your tests and/or new feature(s)
+    - Your testing strategy (even for backend track: how you validated correctness)
+    - Any findings or improvement suggestions (bugs, edge cases, design notes)
 - Submit your sample git bundle emailing it to us (via your recruiter if you have one)
 
 ---
 
 ## Candidate Task Tracks
 
-This repository can be used for two related evaluation tracks. Pick ONE primary track (or a balanced subset of both if explicitly asked). Timebox yourself (suggested 2–4 hours total). Prioritise depth & quality over breadth.
+Pick ONE primary track. Timebox yourself (suggested 2–4 hours total). Prioritise depth & quality over breadth.
 
 ### 1. SEIT / Test Automation Focus
 Core (aim to complete first):
@@ -78,13 +83,15 @@ Expected Backend Deliverables:
 - Updated README (or notes) briefly documenting new endpoints/parameters.
 - Justification for design decisions (inline comments or minimal doc notes acceptable).
 
-### 3. Collaborative / Mixed (Optional)
-If pairing tracks, coordinate: backend adds a new feature; test engineer adds property‑based + contract tests including the new feature and validates no regressions.
-
 ### Submission Guidance
 - Communicate scope: note what you intentionally omitted due to time.
 - Prefer clarity & maintainability over cleverness.
 - Commit incrementally with meaningful messages reflecting decisions.
+
+### Timeboxing Guidance
+- If you reach ~2 hours and core tasks (chosen feature OR baseline tests) are solid, prefer polishing (refactor, assertions) over starting new major scope.
+- Stop before implementing half-finished enhancements; document them instead.
+- At ~4 hours you should have: chosen track core deliverables + optional 1–2 enhancements (only if fully tested).
 
 ---
 
@@ -112,19 +119,38 @@ leverages the Spring Web dependency for handling HTTP requests.
 - `amount` (BigDecimal): The principal amount.
 - `interestRate` (BigDecimal): The annual interest rate (in percentage).
 - `duration` (Integer): The duration of the investment/debt in years.
-- `accrualType` (String): The type of interest calculation (`simple` or `compound`).
+- `accrualType` (String): Enum value: `SIMPLE` or `COMPOUND` (case-sensitive; must match exactly).
 
 **Responses**:
 
 - **200 OK**: Returns the calculation results.
 - **400 Bad Request**: Returns an error message if input validation fails.
 
+### Sample Responses
+
+SIMPLE interest example:
+```json
+{
+  "startingAmount": 1000.00,
+  "interest": 150.00,
+  "finalAmount": 1150.00
+}
+```
+COMPOUND interest example:
+```json
+{
+  "startingAmount": 1000.00,
+  "interest": 157.63,
+  "finalAmount": 1157.63
+}
+```
+
 ## Validation
 
 The API performs the following validations:
 
 - All numeric parameters (`amount`, `interestRate`, and `duration`) must be positive values greater than zero.
-- The `accrualType` must be either `simple` or `compound`. Any other values will result in an error.
+- The `accrualType` must be either the enum value `SIMPLE` or `COMPOUND` (uppercase; other casing will be rejected).
 
 ## Interest Calculation
 
@@ -177,13 +203,139 @@ Where:
 
 ## Running the Application
 
-Ensure you have Gradle installed (Gradle wrapper is included), and run the following command in the root directory of the project:
+You can run the application locally with Gradle or inside a container using Docker Compose (via the provided `Makefile`). Choose the approach that best fits your workflow.
+
+### Option A: Local (Gradle)
+
+Prerequisites: JDK 21 (matches the Dockerfile base), internet access for dependency resolution.
 
 ```bash
 ./gradlew bootRun
 ```
 
+### Option B: Docker Compose via Makefile (recommended for parity)
+
+Prerequisites: Docker (and Docker Compose plugin) installed.
+
+Bring everything up (build image + run container):
+
+```bash
+make run
+```
+
+Equivalent raw command (without Makefile):
+
+```bash
+docker compose up --build
+```
+
+Stop and remove containers (in the same terminal where it's running press Ctrl+C, then optionally):
+
+```bash
+docker compose down
+```
+
+### Option C: Smoke Test Shortcut
+
+Runs container detached, waits briefly, hits health endpoint, then tears down:
+
+```bash
+make smoke
+```
+
+If the smoke test fails you'll see logs printed for the `app` service.
+
+### Verifying the API
+
+After starting (any option), test the endpoint:
+
+```bash
+curl "http://localhost:8080/interest/calculate?amount=1000&interestRate=5&duration=3&accrualType=COMPOUND" | jq
+```
+
+(If `jq` is not installed just omit the pipe.)
+
+### Quick Troubleshooting
+- Port already in use: ensure nothing else is bound to 8080 or change the exposed port in `compose.yaml`.
+- Dependency download issues: retry `./gradlew build` (intermittent network hiccups) or run with `--no-daemon` for clearer logs.
+- Docker build caching stale: run `docker compose build --no-cache`.
+
 ## Testing
 
 You can test the API using tools like Postman or CURL by making requests to `http://localhost:8080/interest/calculate`
 with the required query parameters.
+
+Automated test commands (Gradle):
+```bash
+./gradlew test            # Runs unit tests
+./gradlew integrationTest # Runs integration tests (src/int/...)
+./gradlew check           # Runs both (test + integrationTest) and any other verification tasks
+```
+
+---
+
+## Candidate Notes & Reasoning (to be completed by you when submitting)
+
+(Please keep responses concise: aim for bullet points, max ~8–10 lines per subsection.)
+
+Use this section to concisely explain what you did, why you did it, and anything you would do next with more time. Keep it focused and skimmable.
+
+### 1. Scope & Track Selection
+- Track chosen (Test Automation / Backend):
+- Features / test areas included:
+- Deliberate omissions due to time:
+
+### 2. Approach Summary
+- High-level strategy:
+- Key tools / libraries used and why:
+- Structure of tests / new code:
+
+### 3. Design & Implementation Decisions (Backend track only if applicable)
+- Main abstractions added or changed:
+- Rationale for any new endpoint / parameter / data structure:
+- Trade-offs (simplicity vs extensibility, performance vs clarity):
+
+### 4. Testing Strategy Details (always include)
+- Test layers present (unit / integration / other):
+- Edge cases covered:
+- Any property-based / mutation / performance / contract techniques used:
+
+### 5. Assumptions & Clarifications
+- Business or domain assumptions made:
+- Validation / precision assumptions:
+
+### 6. Findings / Potential Improvements
+- Defects or odd behaviours noticed:
+- Suggested refactors or enhancements:
+- Performance or reliability observations:
+
+### 7. Risk & Future Work
+- Areas of fragility or technical debt:
+- Next steps if given more time:
+
+### 8. Time & Environment
+- Approximate time spent (breakdown):
+- Environment issues encountered (network, tooling) and workarounds:
+
+### 9. Final Reflection
+- What you would prioritise next for quality or maintainability:
+
+
+## AI Usage Summary (to be completed by you when submitting)
+
+We support responsible use of AI. Provide a brief overview so we can focus interview questions effectively. Keep it lean (aim for a few bullet points per item).
+
+1. Tools Used:
+   - List names (e.g. GitHub Copilot, ChatGPT, Claude) and model/version if known.
+2. Assisted Tasks:
+   - Short list (e.g. test skeletons, refactoring, doc phrasing, edge case brainstorming).
+3. Example Interactions:
+   - 1–2 representative prompts or autogenerated suggestions you relied on (can paraphrase).
+4. Human Validation:
+   - How you reviewed/edited AI output (tests added, manual formula checks, style adjustments).
+5. AI vs Manual Split:
+   - Rough % of code/tests initially drafted by AI vs written manually.
+6. Intentional Non‑AI Areas:
+   - Parts you chose to do manually and why (e.g. critical logic, final assertions).
+7. Notable Rejections (optional):
+   - Any incorrect / low‑quality AI suggestions you discarded.
