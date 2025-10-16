@@ -1,5 +1,16 @@
 # Interest Calculator Technical Test
 
+## Table of Contents
+- [Technical Test](#technical-test)
+- [Candidate Task Tracks](#candidate-task-tracks)
+- [Application Overview](#application-overview)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [Candidate Notes & Reasoning (to be completed by you when submitting)](#candidate-notes--reasoning-to-be-completed-by-you-when-submitting)
+- [AI Usage Summary (to be completed by you when submitting)](#ai-usage-summary-to-be-completed-by-you-when-submitting)
+
+---
+
 ## Technical Test
 
 ### Background
@@ -95,20 +106,22 @@ Expected Backend Deliverables:
 
 ---
 
-## Overview
+## Application Overview
+
+### Overview
 
 This Spring Boot application provides an API to calculate interest based on user input. It is designed to handle both
 simple and compound interest calculations using a set of given parameters. The application is built using Kotlin and
 leverages the Spring Web dependency for handling HTTP requests.
 
-## Features
+### Features
 
 - **Interest Calculation**: Users can calculate either simple or compound interest based on input parameters.
 - **Input Validation**: Ensures all input values are positive and valid before processing.
 - **Detailed Output**: The API returns a detailed breakdown including the starting amount, interest accrued, and the
   final balance.
 
-## API Endpoint
+### API Endpoint
 
 **URL**: `/interest/calculate`
 
@@ -126,7 +139,7 @@ leverages the Spring Web dependency for handling HTTP requests.
 - **200 OK**: Returns the calculation results.
 - **400 Bad Request**: Returns an error message if input validation fails.
 
-### Sample Responses
+#### Sample Responses
 
 SIMPLE interest example:
 ```json
@@ -145,16 +158,14 @@ COMPOUND interest example:
 }
 ```
 
-## Validation
+### Validation
 
 The API performs the following validations:
 
 - All numeric parameters (`amount`, `interestRate`, and `duration`) must be positive values greater than zero.
 - The `accrualType` must be either the enum value `SIMPLE` or `COMPOUND` (uppercase; other casing will be rejected).
 
-## Interest Calculation
-
-### Simple Interest
+### Interest Calculation
 
 Simple interest is calculated using the formula:
 
@@ -175,8 +186,6 @@ Where:
 **Calculation**:
 
 - Interest = 1000 x (5 / 100) x 3 = £150
-
-### Compound Interest
 
 Compound interest is calculated using the formula:
 
