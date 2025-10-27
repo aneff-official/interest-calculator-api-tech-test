@@ -12,6 +12,8 @@ class InterestCalculatorService(
     private val simpleInterestCalculationStrategy: InterestCalculationStrategy,
     @param:Qualifier("compoundInterestCalculationStrategy")
     private val compoundInterestCalculationStrategy: InterestCalculationStrategy,
+    @param:Qualifier("compoundDailyInterestCalculationStrategy")
+    private val compoundDailyInterestCalculationStrategy: InterestCalculationStrategy
 ) {
     fun calculate(
         amount: BigDecimal,
@@ -23,7 +25,9 @@ class InterestCalculatorService(
             when (accrualType) {
                 AccrualType.SIMPLE -> simpleInterestCalculationStrategy
                 AccrualType.COMPOUND -> compoundInterestCalculationStrategy
+                AccrualType.DAILY -> compoundDailyInterestCalculationStrategy
             }
+
         return strategy.calculate(amount, interestRate, duration)
     }
 }

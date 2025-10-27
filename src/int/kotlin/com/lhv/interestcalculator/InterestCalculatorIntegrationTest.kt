@@ -78,4 +78,38 @@ class InterestCalculatorIntegrationTest {
             ).andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andExpect(MockMvcResultMatchers.content().string("All parameters must be positive numbers and not zero."))
     }
+
+    // There was no test for "0" interest rate
+    @Test
+    fun `verify API returns bad request for zero interest rate`() {
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .get("/interest/calculate")
+                    .param("amount", "1000")
+                    .param("interestRate", "0")
+                    .param("duration", "3")
+                    .param("accrualType", "SIMPLE")
+                    .contentType(MediaType.APPLICATION_JSON),
+            ).andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andExpect(MockMvcResultMatchers.content().string("All parameters must be positive numbers and not zero."))
+    }
+
+    // New test for compound daily interest rate
+    @Test
+    fun `verify compound daily interest endpoint returns correct response`() {
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .get("/interest/calculate")
+                    .param("amount", "1000")
+                    .param("interestRate", "5")
+                    .param("duration", "3")
+                    .param("accrualType", "DAILY")
+                    .contentType(MediaType.APPLICATION_JSON),
+            ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.startingAmount").value(1000.0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.interestAccrued").value(161.82))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.finalBalance").value(1161.82))
+    }
 }

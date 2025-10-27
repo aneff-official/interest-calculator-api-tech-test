@@ -20,6 +20,7 @@ class InterestCalculatorController(
         @RequestParam("duration") duration: Int,
         @RequestParam("accrualType") accrualType: AccrualType,
     ): ResponseEntity<Any> {
+        // Could possibly split into more specific errors
         if (amount <= BigDecimal.ZERO || interestRate <= BigDecimal.ZERO || duration <= 0) {
             return ResponseEntity.badRequest().body("All parameters must be positive numbers and not zero.")
         }
