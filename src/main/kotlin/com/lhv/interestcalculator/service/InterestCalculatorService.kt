@@ -13,7 +13,7 @@ class InterestCalculatorService(
     @param:Qualifier("compoundInterestCalculationStrategy")
     private val compoundInterestCalculationStrategy: InterestCalculationStrategy,
     @param:Qualifier("compoundDailyInterestCalculationStrategy")
-    private val compoundDailyInterestCalculationStrategy: InterestCalculationStrategy
+    private val compoundDailyInterestCalculationStrategy: InterestCalculationStrategy,
 ) {
     fun calculate(
         amount: BigDecimal,

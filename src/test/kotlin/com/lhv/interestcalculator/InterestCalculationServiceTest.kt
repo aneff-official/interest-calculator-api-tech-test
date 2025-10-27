@@ -42,7 +42,7 @@ class InterestCalculationServiceTest {
             override fun calculate(
                 amount: BigDecimal,
                 interestRate: BigDecimal,
-                duration: Int
+                duration: Int,
             ): BigDecimal {
                 val daysInYear = 365
                 val rate = interestRate.divide(BigDecimal(100), 2, RoundingMode.HALF_UP)
@@ -55,11 +55,12 @@ class InterestCalculationServiceTest {
             }
         }
 
-    private val service = InterestCalculatorService(
-        simpleStrategy,
-        compoundStrategy,
-        compoundDailyStrategy
-    )
+    private val service =
+        InterestCalculatorService(
+            simpleStrategy,
+            compoundStrategy,
+            compoundDailyStrategy,
+        )
 
     @Test
     fun `test simple interest calculation`() {
