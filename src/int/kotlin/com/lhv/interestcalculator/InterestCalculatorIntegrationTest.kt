@@ -61,7 +61,7 @@ class InterestCalculatorIntegrationTest {
                     .param("accrualType", "SIMPLE")
                     .contentType(MediaType.APPLICATION_JSON),
             ).andExpect(MockMvcResultMatchers.status().isBadRequest)
-            .andExpect(MockMvcResultMatchers.content().string("All parameters must be positive numbers and not zero."))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].message").value("Amount must be greater than zero."))
     }
 
     @Test
@@ -76,7 +76,11 @@ class InterestCalculatorIntegrationTest {
                     .param("accrualType", "SIMPLE")
                     .contentType(MediaType.APPLICATION_JSON),
             ).andExpect(MockMvcResultMatchers.status().isBadRequest)
-            .andExpect(MockMvcResultMatchers.content().string("All parameters must be positive numbers and not zero."))
+            .andExpect(
+                MockMvcResultMatchers
+                    .jsonPath("$.errors[*].message")
+                    .value("Duration must be at least 1 year and a sensible number."),
+            )
     }
 
     // There was no test for "0" interest rate
@@ -92,7 +96,7 @@ class InterestCalculatorIntegrationTest {
                     .param("accrualType", "SIMPLE")
                     .contentType(MediaType.APPLICATION_JSON),
             ).andExpect(MockMvcResultMatchers.status().isBadRequest)
-            .andExpect(MockMvcResultMatchers.content().string("All parameters must be positive numbers and not zero."))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].message").value("Interest rate must be between 0 and 100 percent."))
     }
 
     // New test for compound daily interest rate

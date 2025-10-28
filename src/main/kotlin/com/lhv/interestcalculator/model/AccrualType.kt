@@ -5,3 +5,11 @@ enum class AccrualType {
     COMPOUND,
     DAILY,
 }
+
+fun isValidType(value: String): Boolean =
+    try {
+        AccrualType.valueOf(value.uppercase())
+        true
+    } catch (e: IllegalArgumentException) {
+        false
+    }
