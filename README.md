@@ -290,44 +290,44 @@ Automated test commands (Gradle):
 Use this section to concisely explain what you did, why you did it, and anything you would do next with more time. Keep it focused and skimmable.
 
 ### 1. Scope & Track Selection
-- Track chosen (Test Automation / Backend):
-- Features / test areas included:
-- Deliberate omissions due to time:
+- Track chosen: Backend (Second choice) as I feel more confident with hands-on tasks like these
+- Features: Core features such as a new variant of AccrualType (interest rate) - Compound Daily Interest Rate; Better Error Handling; Optional Currency Change
+- Deliberate omissions due to time: The application.properties feature was done, however I lost 30 minutes trying to fix an error around testing it, so ultimately it was removed. No time for the rest of the features was left
 
 ### 2. Approach Summary
-- High-level strategy:
-- Key tools / libraries used and why:
-- Structure of tests / new code:
+- High-level strategy: The strategy was to choose one of the tasks and continue with each subtask
+- Key tools / libraries used and why: Mostly no other libraries/tools were used, except one that helps Serialize (kotlinx) the ErrorHandler class for better HttpResponses (and messages)
+- Structure of tests / new code: I have tried to preserve to current structure of the project, with only adding new files in the already established folders in the project tree. Probably some of the models could be moved elsewhere.
 
 ### 3. Design & Implementation Decisions (Backend track only if applicable)
-- Main abstractions added or changed:
-- Rationale for any new endpoint / parameter / data structure:
-- Trade-offs (simplicity vs extensibility, performance vs clarity):
+- Main abstractions added or changed: AccruelType.DAILY was implemented, alongside with its corresponding tests and revamped error handling.
+- Rationale for any new endpoint / parameter / data structure: The schedule endpoint seemed easy to implement, however I found it confusing as to what is asked of me.
+- Trade-offs (simplicity vs extensibility, performance vs clarity): I lost some time around the integration tests after I implemented the new ErrorHandler, as I had to return a response that had an exact value. The way I previously thought it could work is with variables, showing what the request param initially entered was.
 
 ### 4. Testing Strategy Details (always include)
-- Test layers present (unit / integration / other):
-- Edge cases covered:
-- Any property-based / mutation / performance / contract techniques used:
+- Test layers present (unit / integration / other): An interest rate of 0 seemed to be missing, so I added it. I have already mentioned above the new interest rate type test inclusion.
+- Edge cases covered: I thought that there should be a maximum duration (due to being used in years), so I added a ceiling in addition to the minimum (0)
+- Any property-based / mutation / performance / contract techniques used: There are a few places where property-based techniques are used, however no performance gains were tested if that is the question.
 
 ### 5. Assumptions & Clarifications
-- Business or domain assumptions made:
-- Validation / precision assumptions:
+- Business or domain assumptions made: I assumed that the solution could be a very early or demo version of something similar (but more sophisticated) used in Finance
+- Validation / precision assumptions: I saw that everywhere the scale used was (2) with the BigDecimal, however there was one place I needed a higher number (10) as the compound daily interest rate required higher precision (or else it would give a false calculation)
 
 ### 6. Findings / Potential Improvements
-- Defects or odd behaviours noticed:
-- Suggested refactors or enhancements:
-- Performance or reliability observations:
+- Defects or odd behaviours noticed: Not to my knowledge
+- Suggested refactors or enhancements: There could be many, many other enhancements around the existing and to be yet implemented features. There could be more parameters to the API calls, resulting in a more specific and complex was of calculation. More models for the different classes/properties. Externalise strings/constants
+- Performance or reliability observations: I had no issues running the project or debugging it. It ran smoothly and the requests I made via Postman seemed to have no delay
 
 ### 7. Risk & Future Work
-- Areas of fragility or technical debt:
-- Next steps if given more time:
+- Areas of fragility or technical debt: I think this is not applicable in this case, as technical debts usually originate from big legacy systems and are difficult to migrate, which is not the case here.
+- Next steps if given more time: I would focus on modularity and restructuring when a few more features are implemented. Tests should also be written, validation could be improved.
 
 ### 8. Time & Environment
-- Approximate time spent (breakdown):
-- Environment issues encountered (network, tooling) and workarounds:
+- Approximate time spent (breakdown): I am not sure if reading and writing the documentation counts. If yes, then I might be a little over the time limit. The first part of the core feature (code implementation) seemed to go very smoothly and quickly. As I tried to add more and more, it took more time to fix my syntax and test errors. Overall, the preparation took more than the actual work
+- Environment issues encountered (network, tooling) and workarounds: I had never used the bundle command before and I had some trouble with it. That is why I will try sharing a link to my forked repository of your original one.
 
 ### 9. Final Reflection
-- What you would prioritise next for quality or maintainability:
+- What you would prioritise next for quality or maintainability: It seems to me that precision is one of the key areas to focus on, as we are dealing with real money. So to make sure none is lost, further checks (with code & tests) must be done.
 
 
 ## AI Usage Summary (to be completed by you when submitting)
@@ -335,16 +335,16 @@ Use this section to concisely explain what you did, why you did it, and anything
 We support responsible use of AI. Provide a brief overview so we can focus interview questions effectively. Keep it lean (aim for a few bullet points per item).
 
 1. Tools Used:
-   - List names (e.g. GitHub Copilot, ChatGPT, Claude) and model/version if known.
+   - ChatGPT helped create a comparison table for Unit vs Integration tests, as I have very little experience with them.
 2. Assisted Tasks:
-   - Short list (e.g. test skeletons, refactoring, doc phrasing, edge case brainstorming).
+   - It showed me a real world examples that helped me understand which is which and where it is used.
 3. Example Interactions:
-   - 1–2 representative prompts or autogenerated suggestions you relied on (can paraphrase).
+   - "Difference between unit and integration test. Give a short Java example"
 4. Human Validation:
-   - How you reviewed/edited AI output (tests added, manual formula checks, style adjustments).
+   - I have not directly copied anything from the chat bot or the internet. I did a lot of documentation reading, whether offical or not. Most of the useful code chunks I found were already part of the project; with little tweaks I was able to make them serve a new purpose
 5. AI vs Manual Split:
-   - Rough % of code/tests initially drafted by AI vs written manually.
+   - Well, probably without the explanation I was given, I would have less of an understanding, however I would try and look in websites such as stackoverflow and would still come to a similar conclusion. I would say manual split is 90-95%
 6. Intentional Non‑AI Areas:
-   - Parts you chose to do manually and why (e.g. critical logic, final assertions).
+   - I remembered that within the integration test I struggled a bit with the .andExpect jsonPath string matching and I asked the AI. However it was not very helpful, as it only hallucinated methods that I was not able to find anywhere.
 7. Notable Rejections (optional):
-   - Any incorrect / low‑quality AI suggestions you discarded.
+   - Only the one I just mentioned.
